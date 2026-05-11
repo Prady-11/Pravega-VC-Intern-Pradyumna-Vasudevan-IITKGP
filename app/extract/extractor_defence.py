@@ -25,7 +25,6 @@ from app.db import (
     Company, Document, DocumentType, Metric, ParseStatus, Sector, get_session,
 )
 from app.extract.schemas import IndianDefenceTimeSeriesMetrics
-from app.ingest.bse_client import date_to_period
 from app.ingest.yfinance_client import fetch_yfinance_quarterly
 
 logger = logging.getLogger(__name__)
