@@ -1,0 +1,1 @@
+web: streamlit run app/ui/main.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true --server.enableXsrfProtection=false --server.enableCORS=false --server.enableWebsocketCompression=false
