@@ -17,7 +17,6 @@ from datetime import datetime
 from apscheduler.schedulers.background import BackgroundScheduler
 from apscheduler.triggers.cron import CronTrigger
 
-from app.config import settings
 from app.db import RefreshLog, Sector, get_session
 from app.extract.extractor_fintech import run_extractor_indian_fintech
 from app.synthesize.synthesizer import run_synthesis

@@ -41,13 +41,13 @@ class Base(DeclarativeBase):
 
 # --- Enums --------------------------------------------------------
 
-class Sector(str, enum.Enum):
+class Sector(enum.StrEnum):
     INDIAN_FINTECH = "indian_fintech"
     INDIAN_DEFENCE = "indian_defence"
     US_BIOTECH = "us_biotech"
 
 
-class DocumentType(str, enum.Enum):
+class DocumentType(enum.StrEnum):
     EARNINGS_CALL = "earnings_call"
     INVESTOR_PRESENTATION = "investor_presentation"
     FINANCIAL_STATEMENT = "financial_statement"

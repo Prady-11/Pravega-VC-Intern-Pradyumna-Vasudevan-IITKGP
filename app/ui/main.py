@@ -11,14 +11,14 @@ Run locally:
 from __future__ import annotations
 
 import logging
+import sys
 from datetime import datetime
+from pathlib import Path
 
 import pandas as pd
 import plotly.express as px
 import streamlit as st
 
-import sys
-from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from app.db import (
@@ -67,7 +67,8 @@ METRIC_LABELS = {
     "revenue_inr_cr": "Revenue (INR Cr)",
 }
 
-PERIOD_ORDER_KEY = lambda p: (
+def PERIOD_ORDER_KEY(p):  # noqa: N802
+    return (
     int(p.split("FY")[-1]) if "FY" in p else -1,
     int(p[1]) if p.startswith("Q") and len(p) > 1 and p[1].isdigit() else -1,
 )

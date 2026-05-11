@@ -43,7 +43,7 @@ METRIC_UNIT: dict[str, str] = {
     "revenue_inr_cr":           "Cr",
     "order_book_crore":         "Cr",
     "ebitda_inr_cr":            "Cr",
-    
+
     # Percent (Fintech & Defence)
     "gross_npa_pct":            "%",
     "net_npa_pct":              "%",
@@ -159,7 +159,6 @@ def _fmt_value(metric_name: str, value: float) -> str:
     else:
         formatted = f"{value:.2f}"
     return f"{formatted} {unit}".strip()
-print("hhello")
 
 def aggregate_metrics_for_sector_fy(
     sector: Sector,
@@ -375,7 +374,7 @@ def _sector_from_str(s: str) -> Sector:
     try:
         return Sector(s)
     except ValueError:
-        raise SystemExit(
+        raise SystemExit(  # noqa: B904
             f"Unknown sector '{s}'. Valid: "
             f"{', '.join(s.value for s in Sector)}"
         )
