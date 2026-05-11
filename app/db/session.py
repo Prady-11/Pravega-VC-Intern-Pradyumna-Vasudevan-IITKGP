@@ -1,4 +1,7 @@
 """SQLAlchemy engine and session factory."""
+import os
+
+os.makedirs("data", exist_ok=True)
 from __future__ import annotations
 
 from collections.abc import Iterator
