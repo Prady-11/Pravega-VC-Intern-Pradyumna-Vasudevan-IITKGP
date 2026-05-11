@@ -6,6 +6,8 @@ Run locally:
     cd sector-intel
     streamlit run app/ui/app.py
 """
+
+
 from __future__ import annotations
 
 import logging
@@ -14,6 +16,10 @@ from datetime import datetime
 import pandas as pd
 import plotly.express as px
 import streamlit as st
+
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
 
 from app.db import (
     Company,
