@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 from collections.abc import Iterator
 from contextlib import contextmanager
 
@@ -8,7 +9,14 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from app.config import settings
 
+# Ensure persistent disk directories exist on first boot
+
 _is_sqlite = settings.database_url.startswith("sqlite")
+
+if _is_sqlite:
+    db_path = settings.database_url.replace("sqlite:///", "")
+    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+
 
 engine = create_engine(
     settings.database_url,
@@ -35,3 +43,6 @@ def get_session() -> Iterator[Session]:
         raise
     finally:
         session.close()
+
+
+print("DB URL:", settings.database_url)
