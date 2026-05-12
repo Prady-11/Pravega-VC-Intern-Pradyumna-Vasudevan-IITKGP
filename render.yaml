@@ -12,7 +12,7 @@ services:
       - key: PYTHONUNBUFFERED
         value: "1"
       - key: DATABASE_URL
-        value: sqlite:////var/data/sector_intel.db
+        value: postgresql://postgres:8bQEtQZwFSxLsUWb@db.dkgkpprlwhfugikjdunj.supabase.co:5432/postgres
       - key: RAW_DOCS_DIR        # ← add this
         value: /var/data/raw
       - key: PARSED_DOCS_DIR     # ← add this

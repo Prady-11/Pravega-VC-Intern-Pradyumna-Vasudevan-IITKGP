@@ -1,6 +1,5 @@
 from __future__ import annotations
 
-import os
 from collections.abc import Iterator
 from contextlib import contextmanager
 
@@ -9,21 +8,8 @@ from sqlalchemy.orm import Session, sessionmaker
 
 from app.config import settings
 
-# Ensure persistent disk directories exist on first boot
-
-_is_sqlite = settings.database_url.startswith("sqlite")
-
-if _is_sqlite:
-    db_path = settings.database_url.replace("sqlite:////", "/").replace("sqlite:///", "")
-    dir_name = os.path.dirname(db_path)
-    if dir_name:  # ← only call makedirs if there's actually a directory to create
-        os.makedirs(dir_name, exist_ok=True)
-
-
 engine = create_engine(
     settings.database_url,
-    # SQLite needs this when accessed across threads (Streamlit + APScheduler).
-    connect_args={"check_same_thread": False} if _is_sqlite else {},
     pool_pre_ping=True,
     future=True,
 )
@@ -45,6 +31,3 @@ def get_session() -> Iterator[Session]:
         raise
     finally:
         session.close()
-
-
-print("DB URL:", settings.database_url)
