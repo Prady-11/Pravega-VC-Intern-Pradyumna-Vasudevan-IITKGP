@@ -16,3 +16,4 @@ streamlit>=1.36
 plotly>=5.22
 python-dotenv>=1.0
 tenacity>=8.3
+psycopg2-binary

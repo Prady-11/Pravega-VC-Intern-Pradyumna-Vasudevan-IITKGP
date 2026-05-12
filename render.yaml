@@ -2,9 +2,9 @@ services:
   - type: web
     name: sector-intel
     runtime: python
-    plan: starter
+    plan: free                  # ← change to free
     region: singapore
-    buildCommand: pip install -e .          # ← was: pip install -r requirements.txt
+    buildCommand: pip install -r requirements.txt && alembic upgrade head
     startCommand: streamlit run app/ui/app.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true --server.enableXsrfProtection=false
     envVars:
       - key: ANTHROPIC_API_KEY
@@ -12,12 +12,5 @@ services:
       - key: PYTHONUNBUFFERED
         value: "1"
       - key: DATABASE_URL
-        value: postgresql://postgres:8bQEtQZwFSxLsUWb@db.dkgkpprlwhfugikjdunj.supabase.co:5432/postgres
-      - key: RAW_DOCS_DIR        # ← add this
-        value: /var/data/raw
-      - key: PARSED_DOCS_DIR     # ← add this
-        value: /var/data/parsed
-    disk:
-      name: sector-data
-      mountPath: /var/data
-      sizeGB: 1
+        sync: false             # ← set this manually in dashboard
+# ← delete the entire disk section
