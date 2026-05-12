@@ -14,8 +14,10 @@ from app.config import settings
 _is_sqlite = settings.database_url.startswith("sqlite")
 
 if _is_sqlite:
-    db_path = settings.database_url.replace("sqlite:///", "")
-    os.makedirs(os.path.dirname(db_path), exist_ok=True)
+    db_path = settings.database_url.replace("sqlite:////", "/").replace("sqlite:///", "")
+    dir_name = os.path.dirname(db_path)
+    if dir_name:  # ← only call makedirs if there's actually a directory to create
+        os.makedirs(dir_name, exist_ok=True)
 
 
 engine = create_engine(
