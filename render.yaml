@@ -4,7 +4,7 @@ services:
     runtime: python
     plan: free                  # ← change to free
     region: singapore
-    buildCommand: pip install -r requirements.txt && python scripts/seed_companies.py
+    buildCommand: buildCommand: pip install -r requirements.txt && python scripts/init_db.py && python scripts/seed_companies.py
     startCommand: streamlit run app/ui/app.py --server.port=$PORT --server.address=0.0.0.0 --server.headless=true --server.enableXsrfProtection=false
     envVars:
       - key: ANTHROPIC_API_KEY
