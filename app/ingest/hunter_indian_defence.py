@@ -22,21 +22,23 @@ logger = logging.getLogger(__name__)
 
 # Verify scrip codes against bseindia.com before running.
 INDIAN_DEFENCE_COMPANIES = [
-    {"name": "Hindustan Aeronautics",  "ticker": "HAL.NS",        "scrip": "541154"},
-    {"name": "Bharat Electronics",     "ticker": "BEL.NS",        "scrip": "500049"},
-    {"name": "Bharat Dynamics",        "ticker": "BDL.NS",        "scrip": "541143"},
-    {"name": "Mazagon Dock Shipbldrs", "ticker": "MAZDOCK.NS",    "scrip": "543237"},
-    {"name": "Cochin Shipyard",        "ticker": "COCHINSHIP.NS", "scrip": "540678"},
-    {"name": "Data Patterns",          "ticker": "DATAPATTNS.NS", "scrip": "543428"},
-    {"name": "MIDHANI",                "ticker": "MIDHANI.NS",    "scrip": "541195"},
-    {"name": "Paras Defence",          "ticker": "PARAS.NS",      "scrip": "543282"},
+    {"name": "Hindustan Aeronautics",  "ticker": "HAL.NS",          "scrip": "541154"},
+    {"name": "Bharat Electronics",     "ticker": "BEL.NS",          "scrip": "500049"},
+    {"name": "MTAR Technologies",      "ticker": "MTARTECH.NS",     "scrip": "543270"},
+    {"name": "Paras Defence",          "ticker": "PARAS.NS",        "scrip": "543282"},
+    {"name": "Astra Microwave",        "ticker": "ASTRAMICRO.NS",   "scrip": "532493"},
+    {"name": "Data Patterns",          "ticker": "DATAPATTNS.NS",   "scrip": "543428"},
+    {"name": "Zen Technologies",       "ticker": "ZENTEC.NS",       "scrip": "533339"},
+    {"name": "Bharat Forge",           "ticker": "BHARATFORG.NS",   "scrip": "500493"}
 ]
+
 
 # Map our category keys to DocumentType
 CATEGORY_TO_DOCTYPE = {
     "award_of_orders":         DocumentType.AWARD_OF_ORDERS,
     "press_release":           DocumentType.PRESS_RELEASE,
     "investor_presentation":   DocumentType.INVESTOR_PRESENTATION,
+    "annual_report":           DocumentType.ANNUAL_REPORT,
 }
 
 

@@ -34,7 +34,7 @@ SEC_ARCHIVE_URL = (
     "https://www.sec.gov/Archives/edgar/data/{cik_no_zeros}/{accession_no_dashes}/{document}"
 )
 
-LOOKBACK_YEARS = 3
+LOOKBACK_YEARS = 4
 RELEVANT_FORMS = {"10-Q", "10-K"}
 RATE_LIMIT_SLEEP_SECONDS = 0.1
 

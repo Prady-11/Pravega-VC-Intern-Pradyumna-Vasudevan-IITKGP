@@ -187,13 +187,32 @@ def seed_companies_and_register_files() -> None:
 
             file_hash = _sha256_file(fp)
             existing = s.query(Document).filter_by(
-                company_id=company_id, content_hash=file_hash,
-            ).one_or_none()
+            company_id=company_id,
+            content_hash=file_hash,
+            ).all()
+
             if existing:
+
+                # DEBUG duplicates
+                if len(existing) > 1:
+                    print("\nDUPLICATE DOCUMENTS FOUND")
+                    print("FILE:", fp.name)
+
+                    for d in existing:
+                        print(
+                            "id=", d.id,
+                            "raw_path=", d.raw_path,
+                            "hash=", d.content_hash[:12],
+                        )
+
+                existing = existing[0]
+
                 if existing.raw_path != str(fp.resolve()):
                     existing.raw_path = str(fp.resolve())
+
                 skipped += 1
                 continue
+            
 
             doc_type = _DOC_TYPE_MAP.get(doc_type_str, DocumentType.OTHER)
             s.add(Document(

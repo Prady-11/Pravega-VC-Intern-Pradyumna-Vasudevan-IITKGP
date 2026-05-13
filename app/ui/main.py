@@ -7,10 +7,10 @@ Run locally:
     streamlit run app/ui/app.py
 """
 
-
 from __future__ import annotations
 
 import logging
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -68,10 +68,25 @@ METRIC_LABELS = {
 }
 
 def PERIOD_ORDER_KEY(p):  # noqa: N802
-    return (
-    int(p.split("FY")[-1]) if "FY" in p else -1,
-    int(p[1]) if p.startswith("Q") and len(p) > 1 and p[1].isdigit() else -1,
-)
+    """Properly extracts the Year and Quarter for chronological sorting."""
+    year = 0
+    q = 0
+    
+    # Extract Year (e.g., 2023 or FY24)
+    year_match = re.search(r'(\d{4})', str(p))
+    if year_match:
+        year = int(year_match.group(1))
+    else:
+        fy_match = re.search(r'FY(\d{2})', str(p))
+        if fy_match:
+            year = 2000 + int(fy_match.group(1))
+            
+    # Extract Quarter (e.g., Q1)
+    q_match = re.search(r'Q(\d)', str(p))
+    if q_match:
+        q = int(q_match.group(1))
+        
+    return (year, q)
 
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -106,6 +121,8 @@ def get_metrics(company_id: int) -> pd.DataFrame:
     if df.empty:
         return df
     df = df[df["period"] != "ALL"]
+    
+    # Apply correct chronological sorting
     df["period_key"] = df["period"].apply(PERIOD_ORDER_KEY)
     df = df.sort_values("period_key").drop(columns=["period_key"])
     return df
@@ -223,13 +240,24 @@ with tab_co:
     if metrics_df.empty:
         st.info("No metrics extracted yet for this company.")
     else:
-        numeric_df = metrics_df.dropna(subset=["metric_value"])
+        # Separate numeric vs text metrics dynamically
+        metrics_df["numeric_value"] = pd.to_numeric(metrics_df["metric_value"], errors="coerce")
+        
+        numeric_df = metrics_df[metrics_df["numeric_value"].notna()].copy()
+        
+        # Text dataframe: catches both un-parseable 'metric_value' strings AND 'metric_value_text'
+        text_df = metrics_df[
+            (metrics_df["numeric_value"].isna() & metrics_df["metric_value"].notna()) | 
+            (metrics_df["metric_value"].isna() & metrics_df["metric_value_text"].notna())
+        ].copy()
+
         available = sorted(numeric_df["metric_name"].unique())
+        
         if not available:
             st.info("No numeric metrics extracted yet.")
         else:
             chosen = st.multiselect(
-                "Metrics",
+                "Quantitative Metrics",
                 available,
                 default=available[:4],
                 format_func=lambda m: METRIC_LABELS.get(m, m),
@@ -242,27 +270,57 @@ with tab_co:
                 prior = sub.iloc[-2] if len(sub) >= 2 else None
                 delta = None
                 if prior is not None:
-                    delta = float(latest["metric_value"]) - float(prior["metric_value"])
+                    delta = float(latest["numeric_value"]) - float(prior["numeric_value"])
 
                 c1, c2 = st.columns([1, 3])
                 with c1:
                     st.metric(
                         METRIC_LABELS.get(metric_name, metric_name),
-                        value=f"{latest['metric_value']:,.2f}",
+                        value=f"{latest['numeric_value']:,.2f}",
                         delta=(f"{delta:+,.2f} vs {prior['period']}"
                                if delta is not None else None),
                     )
                 with c2:
                     fig = px.line(
-                        sub, x="period", y="metric_value",
+                        sub, x="period", y="numeric_value",
                         markers=True,
                         title=METRIC_LABELS.get(metric_name, metric_name),
                     )
+                    
+                    # Force Plotly to respect the chronological dataframe order
+                    fig.update_xaxes(categoryorder="trace")
+                    
                     fig.update_layout(
                         height=260, margin=dict(l=10, r=10, t=40, b=10),
                         showlegend=False, xaxis_title="", yaxis_title="",
                     )
                     st.plotly_chart(fig, use_container_width=True)
+
+        # ── Text Metrics Section ──
+        if not text_df.empty:
+            st.divider()
+            st.subheader("📝 Qualitative & Text Metrics")
+            st.caption("Metrics containing non-numeric data, analysis, or qualitative notes.")
+            
+            # Helper to grab the correct text value whether it's in metric_value or metric_value_text
+            def get_text_val(row):
+                if pd.notna(row["metric_value_text"]) and str(row["metric_value_text"]).strip():
+                    return row["metric_value_text"]
+                return row["metric_value"]
+
+            text_df["Value"] = text_df.apply(get_text_val, axis=1)
+            
+            # Format and display
+            display_df = text_df[["period", "metric_name", "Value"]].rename(columns={
+                "period": "Period",
+                "metric_name": "Metric Name",
+            })
+            
+            st.dataframe(
+                display_df,
+                use_container_width=True,
+                hide_index=True
+            )
 
 
 # ── Tab 2: Sector synthesis ─────────────────────────────────────────────────

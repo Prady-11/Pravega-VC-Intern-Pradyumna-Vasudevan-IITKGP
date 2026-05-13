@@ -27,7 +27,7 @@ INDIAN_FINTECH_COMPANIES = [
 
 # Investor presentations only — no concall transcripts, no press releases
 CATEGORY_TO_DOCTYPE = {
-    "investor_presentation": DocumentType.INVESTOR_PRESENTATION,
+    "annual_report": DocumentType.ANNUAL_REPORT,
 }
 
 
@@ -52,7 +52,7 @@ def seed_indian_fintech_companies() -> int:
     return added
 
 
-def run_hunter_indian_fintech(years_back: int = 3) -> dict[str, int]:
+def run_hunter_indian_fintech(years_back: int = 1) -> dict[str, int]:
     seed_indian_fintech_companies()
 
     to_date = date.today()
@@ -101,7 +101,8 @@ def run_hunter_indian_fintech(years_back: int = 3) -> dict[str, int]:
                         parse_status=ParseStatus.PENDING,
                     ))
                     found += 1
-
+    
     summary = {"new_documents": found, "already_present": skipped}
     logger.info("Hunter Indian Fintech complete: %s", summary)
     return summary
+print("hello")

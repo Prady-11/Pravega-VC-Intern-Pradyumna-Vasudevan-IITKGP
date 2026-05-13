@@ -35,7 +35,9 @@ CATEGORY_PATTERNS: dict[str, re.Pattern] = {
     "investor_presentation":  re.compile(r"investor.{0,5}meet.{0,15}outcome", re.IGNORECASE),
     "concall_transcript":     re.compile(r"earnings.{0,5}call.{0,5}transcript|concall\s+transcript", re.IGNORECASE),
     "press_release":          re.compile(r"press\s*release|media\s*release", re.IGNORECASE),
+    "annual_report":          re.compile(r"annual\s*report|annual\s*accounts", re.IGNORECASE),
 }
+
 
 
 def fetch_announcements(

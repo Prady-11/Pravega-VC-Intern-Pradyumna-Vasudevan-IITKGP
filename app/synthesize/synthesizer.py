@@ -257,6 +257,13 @@ Output requirements:
   3. If a metric only has data for 1-2 companies, note that gap rather than
      overgeneralizing.
   4. 4-7 short paragraphs total. No bullet lists. No filler.
+    5. Avoid generic statements like "The sector is doing well" or "Most companies
+         are growing". Be specific about which companies and which metrics.
+    6. Answer each question separately, don't mix them together. Use the angles as a way to structure
+         the response, not as literal questions to answer one by one.
+    7. If you don't see any patterns, say "No clear patterns across companies or quarters" rather than
+            making something up.
+    8. Don't hallucinate company names or metrics that aren't in the data block.
 """
 
 SYNTHESIS_USER_TEMPLATE = """Sector: {sector_label}

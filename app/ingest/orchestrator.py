@@ -17,6 +17,9 @@ from datetime import datetime
 from typing import Callable
 
 from app.db import RefreshLog, Sector, get_session
+from app.ingest.hunter_indian_defence import run_hunter_indian_defence
+from app.ingest.hunter_indian_fintech import run_hunter_indian_fintech
+from app.ingest.hunter_indian_fintech_ir import hunter_indian_fintech_ir
 from app.ingest.hunter_sec import run_hunter_for_us_biotech
 from app.ingest.postman import run_postman
 from app.ingest.reader import run_reader
@@ -26,8 +29,8 @@ logger = logging.getLogger(__name__)
 
 SECTOR_HUNTERS: dict[Sector, Callable[[], dict[str, int]]] = {
     Sector.US_BIOTECH: run_hunter_for_us_biotech,
-    # Sector.INDIAN_FINTECH: run_hunter_for_indian_fintech,   # day 2 morning
-    # Sector.INDIAN_DEFENCE: run_hunter_for_indian_defence,   # day 2 morning
+    Sector.INDIAN_DEFENCE: run_hunter_indian_defence,
+    Sector.INDIAN_FINTECH: run_hunter_indian_fintech & hunter_indian_fintech_ir
 }
 
 

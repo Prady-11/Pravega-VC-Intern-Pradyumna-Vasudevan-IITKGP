@@ -223,6 +223,8 @@ def _extract_one_company(company_id: int) -> tuple[bool, str | None]:
                 Document.company_id == company_id,
                 Document.parse_status == ParseStatus.PARSED,
             )
+            .order_by(Document.id.desc())
+            .limit(4)
             .all()
         )
         doc_records = [
@@ -327,11 +329,10 @@ def _extract_one_company(company_id: int) -> tuple[bool, str | None]:
     return True, None
 
 
-def run_extractor() -> dict[str, int]:
+def run_extractor(tickers: list[str] | None = None) -> dict[str, int]:
     """Per-company extraction for all US Biotech companies with PARSED docs."""
     if not settings.anthropic_api_key:
         raise RuntimeError("ANTHROPIC_API_KEY not set.")
-
     with get_session() as s:
         company_ids = [
             c.id for c in s.query(Company).filter(Company.sector == Sector.US_BIOTECH).all()
