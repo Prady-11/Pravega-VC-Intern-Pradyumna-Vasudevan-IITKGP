@@ -7,8 +7,6 @@ I looked at each sector. I found that the metrics are different because the comp
 You can see each of the metrics in the URL that we deployed.
 
 1. Pipeline Walkthrough
-
-
 Step 1. Hunter** (`app/ingest/hunter/sectorspecific.py`)
 
 For US companies, the Hunter uses the SEC EDGAR submissions API to get a list of filings. It looks for 10-Q, 10-K and 8-K types within the target date range. Then it gets the document URL. Writes a row to `documents` with `parse_status=pending`. If the URL is already in the table the filing is skipped.
@@ -67,10 +65,8 @@ id='weekly_refresh'
 scheduler.start()
 
 ```
-
 The `/refresh` button, in the UI calls the orchestrator.run_sector(sector)` function directly.
-
 Every run writes a row to `refresh_log` with document counts and any errors.
-5. Setup & Deployment
 
+5. Setup & Deployment
 We used Render to deploy the code and Supabash to store the data online.
