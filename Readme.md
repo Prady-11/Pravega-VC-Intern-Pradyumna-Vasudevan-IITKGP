@@ -7,6 +7,7 @@ I looked at each sector. I found that the metrics are different because the comp
 You can see each of the metrics in the URL that we deployed.
 
 1. Pipeline Walkthrough
+
 Step 1. Hunter (`app/ingest/hunter/sectorspecific.py`)
 
 For US companies, the Hunter uses the SEC EDGAR submissions API to get a list of filings. It looks for 10-Q, 10-K and 8-K types within the target date range. Then it gets the document URL. Writes a row to `documents` with `parse_status=pending`. If the URL is already in the table the filing is skipped.
