@@ -17,15 +17,15 @@ For companies the Hunter uses the BSE/NSE filing search endpoints to get the fil
 
 To make sure that the company IR is present for the Fintech companies I used Playwright to navigate to the IR Pages and get the PDFs and parse them.
 
-Step 2. Postman** (`app/ingest/postman.py`)
+Step 2. Postman(`app/ingest/postman.py`)
 
 This step downloads the documents using `httpx`. PDFs are saved as bytes and HTML pages are saved as HTML. If the download is successful `parse_status` is updated to `fetched`. If there is a network failure `parse_status` is updated to `failed`.
 
-Step 3. Reader** (`app/ingest/reader.py` + `chunker.py`)
+Step 3. Reader (`app/ingest/reader.py` + `chunker.py`)
 
 PDFs are parsed using `pdfplumber`. HTML is cleaned using `BeautifulSoup`. The text is then chunked into pieces. Chunks are stored in memory for the step.
 
-Step 4. Extracter** (`app/extract`)
+Step 4. Extracter(`app/extract`)
 
 1. For US Biotech Sector and Indian Defence we just parsed the PDFs. Then we used a keyword finder to get the metrics from the text.
 
