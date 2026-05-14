@@ -117,7 +117,8 @@ The `xbrl_client.py` file underwent **6 git changes** (makes it the most modifie
 
 
 WRITE UP 
+
 2. The most challenging aspect of my experience was the lack of access to essential API tools, such as BravsearchAPI and various language model services, which were all behind a paywall. Although I had the benefit of a free student plan with Gemini, its strict schema rules and limitations posed significant obstacles. As a result, I found myself needing to allocate my own funds to pay for LLM calls, which was not ideal. 
 Moreover, I faced particular difficulties in extracting data from PDFs that were rich in visual content. The complexity of these documents made it extremely hard to chunk the text effectively, often rendering it irrelevant for integration with the language model. These hurdles were frustrating and highlighted the significant constraints imposed by the available APIs.
 
-3. In my recent project, I utilized ChatGPT extensively for various coding tasks and smaller snippets of code that required quick solutions. For more complex planning and structuring of functions and integration into the overall codebase, I relied on Claude. In summary, I would say that around 80% of the coding work was influenced by ChatGPT, while the logical application and planning of the project accounted for about 40% of my overall efforts.
+3. In my recent project, I utilised ChatGPT extensively for various coding tasks and smaller snippets of code that required quick solutions. For more complex planning and structuring of functions and integration into the overall codebase, I relied on Claude. In summary, I would say that around 80% of the coding work was influenced by ChatGPT, while the logical application and planning of the project accounted for about 40% of my overall efforts.
