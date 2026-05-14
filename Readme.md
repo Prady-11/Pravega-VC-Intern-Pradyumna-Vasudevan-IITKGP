@@ -66,11 +66,48 @@ id='weekly_refresh'
 scheduler.start()
 
 ```
-The `/refresh` button, in the UI calls the orchestrator.run_sector(sector)` function directly.
+The `/refresh` button, in the UI calls the orchestrator.run_sector(sector) function directly.
 Every run writes a row to `refresh_log` with document counts and any errors.
 
 5. Setup & Deployment
 We used Render to deploy the code and Supabash to store the data online.
+
+6. Here is the analysis based on the imports outlined in the three extractor files in conjunction with the module listing:
+`extractor.py` (US Biotech)
+
+| `section_router.py` | `extract_relevant_text()` — focuses on MD&A/Business sections, filters chunks |
+
+| `xbrl_client.py` | `extract_cik_from_url()` + `fetch_all_quarters_for_company()` — fetches SEC XBRL data |
+
+| `schemas.py` | `USBiotechTimeSeriesMetrics` — defines the output schema for Pydantic |
+
+`extractor_defence.py` (Indian Defence)
+
+| `schemas.py` | `IndianDefenceTimeSeriesMetrics` — defines the output schema for Pydantic |
+
+| `keywords.py` | Likely contributes to the `_ORDERBOOK_ANCHORS` regex expressions (e.g., `order book`, `order backlog`, etc.) |
+
+`extractor_fintech.py` (Indian Fintech)
+
+| `strategies.py` | Defines per-ticker configuration in the function `get_strategy(ticker)` (modes can be text, image, hybrid, etc.), along with anchors and target fields) |
+
+| `page_renderer.py` | Involved in text extraction and PDF printing or PNG slide rendering via `extract_text_block()` and `render_kpi_pages()` |
+
+| `schemas.py` | Defines the output schema for Pydantic as `IndianFintechTimeSeriesMetrics` |
+
+| `anchor_miner.py` | Discovered slides KPI anchors, which can be utilised by `page_renderer` or `strategies` |
+
+Common to All Three
+
+| `schemas.py` | Each imports their time-series metrics schemas from this file |
+
+| `fact_assembler.py` | Not directly imported, but likely creates fact blocks that are deterministic (yfinance/XBRL) utilised within the LLM in prompts — probably called in a hierarchical manner |
+
+---
+
+The `xbrl_client.py` file underwent **6 git changes** (makes it the most modified file), and this is understandable given the issues that the SEC XBRL API has. `extractor_fintech.py` reflects the complexity of the multi-modal + per-t
+
+
 
 
 
